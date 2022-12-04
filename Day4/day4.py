@@ -12,20 +12,19 @@ from typing import (
     Union,
     Generator,
 )
-from termcolor import colored
 from copy import deepcopy
 from heapq import heappop, heappush
 import string
-alphabet = list(string.ascii_lowercase)
+
 import re
-alpha_map = {}
+
 
 def parse(filename: str):
     with open(filename, "r") as f:
         lines: List[str] = f.read().strip().split("\n")
 
-    lines = [list(map(int, re.findall("\d+", x))) for x in lines]
-    return lines
+    l = [list(map(int, re.findall("\d+", x))) for x in lines]
+    return l
 
 
 def part1(lines: List[List[int]]):
@@ -47,7 +46,6 @@ def part2(lines: List[List[int]]):
     return res
 
 
-
 def main(filename: str) -> Tuple[Optional[int], Optional[int]]:
     from time import time
 
@@ -57,7 +55,7 @@ def main(filename: str) -> Tuple[Optional[int], Optional[int]]:
     lines = parse(filename)
     answer_a = part1(lines)
     lines = parse(filename)
-    answer_b =  part2(lines)
+    answer_b = part2(lines)
 
     end = time()
     print(end - start)

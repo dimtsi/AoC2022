@@ -12,36 +12,37 @@ from typing import (
     Union,
     Generator,
 )
-from termcolor import colored
 from copy import deepcopy
 from heapq import heappop, heappush
 import string
-alphabet = list(string.ascii_lowercase)
 
-alpha_map = {}
 
 def parse(filename: str):
     with open(filename, "r") as f:
         lines: List[str] = f.read().strip().split("\n")
     return lines
 
+
 def priority(lines: List[str]):
     total_priority = 0
     for line in lines:
-        line = list(line)
-        length = len(line)
-        first, second = set(line[:(length // 2)]), set(line[(length // 2):])
+        l_line = list(line)
+        length = len(l_line)
+        first, second = set(l_line[: (length // 2)]), set(
+            l_line[(length // 2) :]
+        )
         common = first & second
         assert len(common) == 1
-        common = common.pop()
+        comm = common.pop()
 
-        if common.islower():
-            priority = ord(common) - ord("a") + 1
+        if comm.islower():
+            priority = ord(comm) - ord("a") + 1
         else:
-            priority = ord(common) - ord("A") + 27
+            priority = ord(comm) - ord("A") + 27
 
         total_priority += priority
     return total_priority
+
 
 def priority_2(lines: List[str]):
     badges = []
@@ -66,7 +67,6 @@ def priority_2(lines: List[str]):
     return total_priority
 
 
-
 def main(filename: str) -> Tuple[Optional[int], Optional[int]]:
     from time import time
 
@@ -76,7 +76,7 @@ def main(filename: str) -> Tuple[Optional[int], Optional[int]]:
     lines = parse(filename)
     answer_a = priority(lines)
     lines = parse(filename)
-    answer_b =  priority_2(lines)
+    answer_b = priority_2(lines)
 
     end = time()
     print(end - start)

@@ -13,9 +13,9 @@ from typing import (
     Union,
     Generator,
 )
-from termcolor import colored
 from copy import deepcopy
 from heapq import heappop, heappush
+
 
 @dataclass
 class VILLAIN:
@@ -23,17 +23,20 @@ class VILLAIN:
     PAPER: str = "B"
     SCISSORS: str = "C"
 
+
 @dataclass
 class HERO:
     ROCK: str = "X"
     PAPER: str = "Y"
     SCISSORS: str = "Z"
 
+
 @dataclass
 class HERO_2:
     LOSE: str = "X"
     DRAW: str = "Y"
     WIN: str = "Z"
+
 
 MAP = {
     VILLAIN.ROCK: HERO.ROCK,
@@ -44,14 +47,15 @@ MAP = {
 TO_WIN = {
     VILLAIN.ROCK: HERO.PAPER,
     VILLAIN.PAPER: HERO.SCISSORS,
-    VILLAIN.SCISSORS: HERO.ROCK
+    VILLAIN.SCISSORS: HERO.ROCK,
 }
 
 TO_LOSE = {
     VILLAIN.PAPER: HERO.ROCK,
     VILLAIN.ROCK: HERO.SCISSORS,
-    VILLAIN.SCISSORS: HERO.PAPER
+    VILLAIN.SCISSORS: HERO.PAPER,
 }
+
 
 def parse(filename: str):
     with open(filename, "r") as f:
@@ -69,6 +73,7 @@ def val_score(val):
         return 2
     if val == HERO.SCISSORS:
         return 3
+
 
 def score_of_round(villain: str, hero: str):
     score = 0
@@ -89,11 +94,11 @@ def score_of_round(villain: str, hero: str):
 
 def score_of_round_p2(elf: str, hero: str):
     if hero == HERO_2.WIN:
-            hero_select = TO_WIN[elf]
-            score = 6
+        hero_select = TO_WIN[elf]
+        score = 6
     elif hero == HERO_2.LOSE:
-            hero_select = TO_LOSE[elf]
-            score = 0
+        hero_select = TO_LOSE[elf]
+        score = 0
     else:
         hero_select = MAP[elf]
         score = 3
@@ -106,13 +111,14 @@ def play(strategy: List[List[str]]):
     total_score = 0
     for elf, hero in strategy:
         total_score += val_score(hero)
-        total_score += score_of_round(elf,hero)
+        total_score += score_of_round(elf, hero)
     return total_score
+
 
 def play2(strategy: List[List[str]]):
     total_score = 0
     for elf, hero in strategy:
-        total_score += score_of_round_p2(elf,hero)
+        total_score += score_of_round_p2(elf, hero)
     return total_score
 
 
