@@ -34,7 +34,7 @@ class Node:
         self.parent = parent
 
 
-TREE: Dict[str, Node] = {}
+VISIBLE: Dict[str, Node] = {}
 WEIGHTS: Dict[str, int] = {}
 
 
@@ -53,7 +53,7 @@ def node_weight(node: Node, nodes: Dict[str, Node]):
 
 
 def calc_all_weights():
-    node_weight(TREE["/"], TREE)
+    node_weight(VISIBLE["/"], VISIBLE)
 
 
 def run(cmds, p2=False):
@@ -69,24 +69,24 @@ def run(cmds, p2=False):
         if is_command:
             if cmd[1] == "cd":
                 if cmd[2] == "..":
-                    curr_dir: Node = TREE[curr_dir.parent]
+                    curr_dir: Node = VISIBLE[curr_dir.parent]
                 else:
-                    if not cmd[2] in TREE.keys():
-                        TREE[cmd[2]] = Node(cmd[2])
-                    curr_dir = TREE[
+                    if not cmd[2] in VISIBLE.keys():
+                        VISIBLE[cmd[2]] = Node(cmd[2])
+                    curr_dir = VISIBLE[
                         os.path.join(
-                            curr_dir.id if curr_dir else "", TREE[cmd[2]].id
+                            curr_dir.id if curr_dir else "", VISIBLE[cmd[2]].id
                         )
                     ]
         else:
             if cmd[0] == "dir":
                 child_path = os.path.join(curr_dir.id, cmd[1])
-                if not child_path in TREE.keys():
-                    TREE[child_path] = Node(child_path)
-                TREE[curr_dir.id].children.append(child_path)
-                TREE[child_path].parent = curr_dir.id
+                if not child_path in VISIBLE.keys():
+                    VISIBLE[child_path] = Node(child_path)
+                VISIBLE[curr_dir.id].children.append(child_path)
+                VISIBLE[child_path].parent = curr_dir.id
             else:
-                TREE[curr_dir.id].w += int(cmd[0])
+                VISIBLE[curr_dir.id].w += int(cmd[0])
 
     calc_all_weights()
     if not p2:
@@ -102,19 +102,11 @@ def run(cmds, p2=False):
 def main(filename: str) -> Tuple[Optional[int], Optional[int]]:
     from time import time
 
-    global TREE
-    global WEIGHTS
-    TREE = {}
-    WEIGHTS = {}
-
     start = time()
     answer_a, answer_b = None, None
 
     lines = parse(filename)
     answer_a = run(lines)
-
-    TREE = {}
-    WEIGHTS = {}
 
     lines = parse(filename)
     answer_b = run(lines, p2=True)
