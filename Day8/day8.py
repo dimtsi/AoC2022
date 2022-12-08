@@ -22,35 +22,6 @@ import re
 import numpy as np
 
 
-def get_neighbors(
-    matrix: List[List[int]], i: int, j: int, diagonal: bool = False
-) -> List[Tuple[int, int]]:
-    neighbors = []
-
-    num_rows = len(matrix)
-    num_cols = len(matrix[i])
-
-    if i - 1 >= 0:
-        neighbors.append((i - 1, j))
-    if i + 1 < num_rows:
-        neighbors.append((i + 1, j))
-    if j - 1 >= 0:
-        neighbors.append((i, j - 1))
-    if j + 1 < num_cols:
-        neighbors.append((i, j + 1))
-    # diagonal
-    if diagonal:
-        if i - 1 >= 0 and j - 1 >= 0:
-            neighbors.append((i - 1, j - 1))
-        if i - 1 >= 0 and j + 1 < num_cols:
-            neighbors.append((i - 1, j + 1))
-        if i + 1 < num_rows and j - 1 >= 0:
-            neighbors.append((i + 1, j - 1))
-        if i + 1 < num_rows and j + 1 < num_cols:
-            neighbors.append((i + 1, j + 1))
-    return neighbors
-
-
 def parse(filename: str):
     with open(filename, "r") as f:
         lines: List[str] = f.read().strip().split("\n")
@@ -61,16 +32,7 @@ def parse(filename: str):
     return res
 
 
-def get_neighbors_and_values(
-    matrix: List[List[int]], i: int, j: int, diagonal=False
-) -> Tuple[List[Tuple[int, int]], List[int]]:
-
-    neighbors = get_neighbors(matrix, i, j, diagonal)
-    vals = [matrix[x][y] for (x, y) in neighbors]
-    return neighbors, vals
-
-
-def run(grid, p2=False):
+def run(grid):
     VISIBLE = [[True for j in range(len(grid[i]))] for i in range(len(grid))]
 
     for i in range(1, len(grid) - 1):
@@ -78,8 +40,8 @@ def run(grid, p2=False):
             VISIBLE[i][j] = False
 
     # FROM LEFT
-    row_mins_l = defaultdict(lambda: 1e10)
-    row_mins_r = defaultdict(lambda: 1e10)
+    row_mins_l = defaultdict(lambda: float("inf"))
+    row_mins_r = defaultdict(lambda: float("inf"))
     col_mins_t = grid[0]
     col_mins_b = grid[-1]
 
@@ -106,16 +68,14 @@ def run(grid, p2=False):
 
     vis_res = []
     for i in range(len(grid)):
-        print(VISIBLE[i])
         for j in range(len(grid[0])):
             if VISIBLE[i][j]:
                 vis_res.append((i, j))
-    print(vis_res)
-    print(len(vis_res))
+
     return len(vis_res)
 
 
-def runp2(grid, p2=False):
+def runp2(grid):
 
     L_DISTS = [[0 for j in range(len(grid[i]))] for i in range(len(grid))]
     R_DISTS = [[0 for j in range(len(grid[i]))] for i in range(len(grid))]
@@ -162,7 +122,6 @@ def runp2(grid, p2=False):
             if dist > max_dist:
                 max_dist = dist
             ALL_DISTS[i][j] = dist
-    print(ALL_DISTS)
     return max_dist
 
 
@@ -176,7 +135,7 @@ def main(filename: str) -> Tuple[Optional[int], Optional[int]]:
     answer_a = run(lines)
 
     lines = parse(filename)
-    answer_b = runp2(lines, p2=True)
+    answer_b = runp2(lines)
 
     end = time()
     print(end - start)
