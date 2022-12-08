@@ -104,8 +104,8 @@ def main(filename: str) -> Tuple[Optional[int], Optional[int]]:
 
     global VISIBLE
     global WEIGHTS
-    VISIBLE = {}
-    WEIGHTS = {}
+    VISIBLE.clear()
+    WEIGHTS.clear()
 
     start = time()
     answer_a, answer_b = None, None
@@ -113,8 +113,8 @@ def main(filename: str) -> Tuple[Optional[int], Optional[int]]:
     lines = parse(filename)
     answer_a = run(lines)
 
-    VISIBLE = {}
-    WEIGHTS = {}
+    VISIBLE.clear()
+    WEIGHTS.clear()
 
     lines = parse(filename)
     answer_b = run(lines, p2=True)
