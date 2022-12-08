@@ -102,11 +102,19 @@ def run(cmds, p2=False):
 def main(filename: str) -> Tuple[Optional[int], Optional[int]]:
     from time import time
 
+    global VISIBLE
+    global WEIGHTS
+    VISIBLE = {}
+    WEIGHTS = {}
+
     start = time()
     answer_a, answer_b = None, None
 
     lines = parse(filename)
     answer_a = run(lines)
+
+    VISIBLE = {}
+    WEIGHTS = {}
 
     lines = parse(filename)
     answer_b = run(lines, p2=True)
