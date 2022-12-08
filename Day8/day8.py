@@ -32,7 +32,7 @@ def parse(filename: str):
     return res
 
 
-def run(grid):
+def run(grid: List[List[int]]):
     VISIBLE = [[True for j in range(len(grid[i]))] for i in range(len(grid))]
 
     for i in range(1, len(grid) - 1):
@@ -40,8 +40,8 @@ def run(grid):
             VISIBLE[i][j] = False
 
     # FROM LEFT
-    row_mins_l = defaultdict(lambda: float("inf"))
-    row_mins_r = defaultdict(lambda: float("inf"))
+    row_mins_l = defaultdict(lambda: float("inf"))  # type: ignore
+    row_mins_r = defaultdict(lambda: float("inf"))  # type: ignore
     col_mins_t = grid[0]
     col_mins_b = grid[-1]
 
@@ -75,7 +75,7 @@ def run(grid):
     return len(vis_res)
 
 
-def runp2(grid):
+def runp2(grid: List[List[int]]):
 
     L_DISTS = [[0 for j in range(len(grid[i]))] for i in range(len(grid))]
     R_DISTS = [[0 for j in range(len(grid[i]))] for i in range(len(grid))]
