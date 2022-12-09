@@ -32,7 +32,7 @@ def parse(filename: str):
     return res
 
 
-def move_head(dir: str, curr_pos):
+def move_head(dir: str, curr_pos: Tuple[int, int]) -> Tuple[int, int]:
     x, y = curr_pos
     if dir == "R":
         x += 1
@@ -45,7 +45,7 @@ def move_head(dir: str, curr_pos):
     return x, y
 
 
-def move_tail(h_xy, t_xy):
+def move_tail(h_xy: Tuple[int, int], t_xy: Tuple[int, int]) -> Tuple[int, int]:
     h_x, h_y = h_xy
     t_x, t_y = t_xy
 
@@ -98,7 +98,7 @@ def runp2(moves):
         for i in range(n):
             head_pos = move_head(dir, head_pos)
             prev_pos = head_pos
-            for j, tail_pos in enumerate(knot_pos):
+            for j in range(len(knot_pos)):
                 tail_pos = move_tail(prev_pos, knot_pos[j])
                 knot_pos[j] = tail_pos
                 prev_pos = tail_pos
