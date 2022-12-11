@@ -13,6 +13,7 @@ from typing import (
     Optional,
     Union,
     Generator,
+    Callable,
 )
 from copy import deepcopy
 from heapq import heappop, heappush
@@ -34,10 +35,11 @@ class Monkey:
         self.inspections = 0
         self.p2 = False
         self.lcm = 1
+        self._op_func: Optional[Callable] = None
 
     def play(self, M):
         for i, old in enumerate(self.items):
-            new_val = eval(self.op)
+            new_val = self.op_func(old)
             if not self.p2:
                 new_val = new_val // 3
             else:
@@ -48,6 +50,21 @@ class Monkey:
                 M[self.false_cond].items.append(new_val)
         self.inspections += len(self.items)
         self.items.clear()
+
+    @property
+    def op_func(self):
+        if self._op_func is None:
+            a, op, b = self.op.split()
+            if b.isnumeric():
+                b = int(b)
+            else:
+                b = None
+
+            if op == "+":
+                self._op_func = lambda x: x + (b if b else x)
+            elif op == "*":
+                self._op_func = lambda x: x * (b if b else x)
+        return self._op_func
 
 
 def parse(filename: str):
