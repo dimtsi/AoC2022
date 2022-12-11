@@ -76,15 +76,15 @@ def parse(filename: str):
         for i, line in enumerate(monk.split("\n")):
             if i == 0:
                 id = int(re.findall("-?\d+", line)[0])
-            if i == 1:
+            elif i == 1:
                 items = list(map(int, re.findall("-?\d+", line)))
-            if i == 2:
+            elif i == 2:
                 op = line.split(" = ")[1]
-            if i == 3:
+            elif i == 3:
                 div = int(re.findall("-?\d+", line)[0])
-            if i == 4:
+            elif i == 4:
                 true_cond = int(re.findall("-?\d+", line)[0])
-            if i == 5:
+            elif i == 5:
                 false_cond = int(re.findall("-?\d+", line)[0])
 
         M.append(Monkey(id, items, op, div, true_cond, false_cond))
