@@ -54,7 +54,7 @@ def parse(filename: str):
     with open(filename, "r") as f:
         lines = f.read().strip().split("\n\n")
 
-    M = {}
+    M = []
     for monk in lines:
         for i, line in enumerate(monk.split("\n")):
             if i == 0:
@@ -70,25 +70,25 @@ def parse(filename: str):
             if i == 5:
                 false_cond = int(re.findall("-?\d+", line)[0])
 
-        M[id] = Monkey(id, items, op, div, true_cond, false_cond)
+        M.append(Monkey(id, items, op, div, true_cond, false_cond))
     return M
 
 
-def run(M: Dict[int, Monkey], p2=False):
+def run(M: List[Monkey], p2=False):
     lcm = 1
-    for m in M.values():
+    for m in M:
         lcm *= (lcm * m.div) // math.gcd(lcm, m.div)
 
     if p2:
-        for m in M.values():
+        for m in M:
             m.p2 = True
             m.lcm = lcm
 
     for _ in range(10000 if p2 else 20):
-        for id, m in M.items():
+        for m in M:
             m.play(M)
 
-    inspections = sorted([m.inspections for m in M.values()])
+    inspections = sorted([m.inspections for m in M])
     total = inspections[-1] * inspections[-2]
 
     return total
