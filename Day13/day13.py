@@ -91,7 +91,7 @@ def compare(v1, v2):
 
 
 def compare_result(v1, v2):
-    result = compare(list(v1), list(v2))
+    result = compare(deepcopy(v1), deepcopy(v2))
     if result == "eq":
         return 0
     elif not result:
@@ -105,29 +105,19 @@ def compare_result(v1, v2):
 def run(lines):
     idxs = []
     for i, (v1, v2) in enumerate(lines):
-        if i == 4:
-            print()
         if compare(v1, v2):
             idxs.append(i + 1)
-
     return sum(idxs)
 
 
 def runp2(lines):
-    r = deepcopy(lines)
-    r.append([[6]])
-    r.append([[2]])
-
-    sorted_l = sorted(
-        r,
-        key=functools.cmp_to_key(
-            lambda x, y: compare_result(deepcopy(x), deepcopy(y))
-        ),
-    )
+    dividers = [[[6]], [[2]]]
+    lines.extend(dividers)
+    sorted_l = sorted(lines, key=functools.cmp_to_key(compare_result))
 
     idxs = []
     for idx, v in enumerate(reversed(sorted_l)):
-        if v == [[6]] or v == [[2]]:
+        if v in dividers:
             idxs.append(idx + 1)
     res = idxs[0] * idxs[1]
     return res
