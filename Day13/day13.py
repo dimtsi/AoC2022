@@ -111,8 +111,6 @@ def run(lines):
             idxs.append(i + 1)
             print()
 
-    print()
-    print(idxs)
     return sum(idxs)
 
 
