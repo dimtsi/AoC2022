@@ -109,7 +109,6 @@ def run(lines):
             print()
         if compare(v1, v2):
             idxs.append(i + 1)
-            print()
 
     return sum(idxs)
 
