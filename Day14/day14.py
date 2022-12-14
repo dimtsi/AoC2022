@@ -22,9 +22,8 @@ import re
 
 import numpy as np
 
-R = {}
-S = {}
-# MIN_X, MAX_X = None, None
+R = set()
+S = set()
 MAX_Y = None
 BOTTOM = None
 
@@ -40,39 +39,34 @@ def single_rock_path(p1, p2):
     x1, y1 = p1
     x2, y2 = p2
 
-    R[tuple(p1)] = True
-    R[tuple(p2)] = True
+    R.add(tuple(p1))
+    R.add(tuple(p2))
 
     dx = x2 - x1
     dy = y2 - y1
 
     if dx != 0:
         for x in range(min(x1, x2) + 1, max(x1, x2)):
-            R[(x, y1)] = True
+            R.add((x, y1))
     elif dy != 0:
         for y in range(min(y1, y2) + 1, max(y1, y2)):
-            R[(x1, y)] = True
+            R.add((x1, y))
     elif dx != 0 and dy != 0:
         raise Exception("Check input")
 
 
-def find_abyss_limits():
-    rock_positions = list(R.keys())
+def build_abyss_limits():
     global BOTTOM
     global MAX_Y
-    BOTTOM = set(x[0] for x in R.keys())
-    #
-    # MIN_X = min(rock_positions, key = lambda x: x[0])[0]
-    MAX_Y = max(rock_positions, key=lambda x: x[1])[1]
+    BOTTOM = set(x[0] for x in R)
+    MAX_Y = max(R, key=lambda x: x[1])[1]
 
 
 def build_rock_path(line):
     rocks = []
     for move in line.split(" -> "):
         rocks.append(list(map(int, re.findall("-?\d+", move))))
-    for i in range(len(rocks)):
-        if i == len(rocks) - 1:
-            break
+    for i in range(len(rocks) - 1):
         single_rock_path(rocks[i], rocks[i + 1])
 
 
@@ -105,14 +99,14 @@ def sand_drop():
     while curr:
         prev = curr
         curr = next_pos(curr)
-        if curr is not None:
+        if curr:
             if curr[0] not in BOTTOM or curr[1] > MAX_Y:
                 abyss = True
                 break
         else:
             break
     if not abyss:
-        S[prev] = True
+        S.add(prev)
     return abyss
 
 
@@ -124,16 +118,16 @@ def sand_drop_p2():
         curr = next_pos(curr, p2=True)
         if not curr:
             break
-    S[prev] = True
+    S.add(prev)
     return
 
 
 def run(lines):
     global R, S, BOTTOM, MAX_Y
 
-    R, S, BOTTOM, MAX_Y = {}, {}, None, None
+    R, S, BOTTOM, MAX_Y = set(), set(), None, None
     [build_rock_path(line) for line in lines]
-    find_abyss_limits()
+    build_abyss_limits()
 
     cnt = 0
     abyss = False
@@ -146,12 +140,12 @@ def run(lines):
 def runp2(lines):
     global R, S, BOTTOM, MAX_Y
 
-    R, S, BOTTOM, MAX_Y = {}, {}, None, None
+    R, S, BOTTOM, MAX_Y = set(), set(), None, None
     [build_rock_path(line) for line in lines]
-    find_abyss_limits()
+    build_abyss_limits()
 
     cnt = 0
-    while not (500, 0) in S.keys():
+    while (500, 0) not in S:
         sand_drop_p2()
         cnt += 1
     return cnt
