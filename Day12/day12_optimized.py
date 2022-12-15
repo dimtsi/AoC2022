@@ -69,16 +69,15 @@ def dijkstra(
         visited.add(elem)
         for (i, j) in get_neighbors(m, *elem):
             diff = ord(m[i][j]) - ord(m[elem[0]][elem[1]])
-            if not p2 and diff > 1:
+            diff = -diff if p2 else diff
+            if diff > 1:
                 continue
-            if p2 and (-diff > 1):
-                continue
+
             if (i, j) not in visited and distances[(i, j)] > dist + 1:
                 distances[(i, j)] = dist + 1
                 if ((i, j) == end) or (p2 and m[i][j] == "a"):
                     if p2:
                         end = (i, j)
-                    print(i, j)
                     pq = []
                     break
                 heappush(pq, (dist + 1, (i, j)))

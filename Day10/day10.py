@@ -25,6 +25,7 @@ import numpy as np
 def parse(filename: str):
     with open(filename, "r") as f:
         lines: List[str] = f.read().strip().split("\n")
+        # list(map(int, re.findall("-?\d+", line)))
     return lines
 
 
