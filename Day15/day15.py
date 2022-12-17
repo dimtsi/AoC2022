@@ -163,5 +163,5 @@ if __name__ == "__main__":
     answer_a, answer_b = main(input)
     print(f"Your input answers: \nA: {answer_a}\nB: {answer_b}")
 
-    submit_answer(answer_a, "a")
-    submit_answer(answer_b, "b")
+    submit_answer(answer_a, "a", datetime(2022, 12, 15))
+    submit_answer(answer_b, "b", datetime(2022, 12, 15))
