@@ -24,7 +24,7 @@ import numpy as np
 
 R = set()
 S = set()
-MAX_Y = None
+max_H = None
 BOTTOM = None
 
 
@@ -57,7 +57,7 @@ def single_rock_path(p1, p2):
 
 def build_abyss_limits():
     global BOTTOM
-    global MAX_Y
+    global max_H
     BOTTOM = set(x[0] for x in R)
     MAX_Y = max(R, key=lambda x: x[1])[1]
 
@@ -71,7 +71,7 @@ def build_rock_path(line):
 
 
 def is_blocked(pos, p2=False):
-    if (pos in S) or (pos in R) or (p2 and pos[1] == MAX_Y + 2):
+    if (pos in S) or (pos in R) or (p2 and pos[1] == max_H + 2):
         return True
     return False
 
@@ -92,7 +92,7 @@ def next_pos(pos, p2=False):
 
 
 def sand_drop():
-    global MAX_Y
+    global max_H
     start = (500, 0)
     curr = start
     abyss = False
@@ -123,7 +123,7 @@ def sand_drop_p2():
 
 
 def run(lines):
-    global R, S, BOTTOM, MAX_Y
+    global R, S, BOTTOM, max_H
 
     R, S, BOTTOM, MAX_Y = set(), set(), None, None
     [build_rock_path(line) for line in lines]
@@ -138,7 +138,7 @@ def run(lines):
 
 
 def runp2(lines):
-    global R, S, BOTTOM, MAX_Y
+    global R, S, BOTTOM, max_H
 
     R, S, BOTTOM, MAX_Y = set(), set(), None, None
     [build_rock_path(line) for line in lines]

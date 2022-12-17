@@ -91,18 +91,20 @@ def run(lines, target):
 def runp2(lines, bounds):
     S = lines
     CLOSEST = {k: manh(k, v) for k, v in S.items()}
-    cnt = 0
+
     for i in range(bounds[1]):
+        if i % int(1e5) == 0:
+            print(i)
         intervals = []
         for s in S:
             interv = interval(s, CLOSEST[s], i)
             if interv:
-                if min(interv) < bounds[0] and max(interv) > bounds[1]:
-                    break
-                elif min(interv) < bounds[0]:
-                    interv = [bounds[0], interv[1]]
-                elif max(interv) > bounds[1]:
-                    interv = [interv[0], bounds[1]]
+                # if min(interv) <= bounds[0] and max(interv) >= bounds[1]:
+                #     break
+                # elif min(interv) < bounds[0]:
+                #     interv = [bounds[0], interv[1]]
+                # elif max(interv) > bounds[1]:
+                #     interv = [interv[0], bounds[1]]
                 intervals.append(interv)
         final = merge_intervals(intervals)
         if len(final) > 1:
