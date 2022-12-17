@@ -186,7 +186,7 @@ def max_flow_p2():
             you_opened = deepcopy(set(opened))
             you_opened.add(you)
 
-            # Elephant opens
+            # Elephant also opens
             if eleph not in you_opened and eleph in VALID_VALVES:
                 out_opened = deepcopy(you_opened) | {eleph}
                 new_score = score + get_curr_flow(out_opened)
@@ -199,7 +199,7 @@ def max_flow_p2():
                 )
                 q.append(new_state)
 
-            # Traverse all elephant moves in next step
+            # Traverse all elephant moves in next step while you open valve
             for eleph_new in G[eleph]:
                 out_opened = you_opened
                 new_score = score + get_curr_flow(out_opened)
@@ -212,9 +212,9 @@ def max_flow_p2():
                 )
                 q.append(new_state)
 
-        # You move
+        # Traverse all your moves in next step
         for you_new in G[you]:
-            # Elephant opens
+            # Elephant opens valve
             if eleph in VALID_VALVES and eleph not in opened:
                 out_opened = deepcopy(opened) | {eleph}
                 new_score = score + get_curr_flow(out_opened)
@@ -227,7 +227,7 @@ def max_flow_p2():
                 )
                 q.append(new_state)
 
-            # Elephant moves
+            # Elephant moves as well
             for eleph_new in G[eleph]:
                 out_opened = deepcopy(opened)
                 new_score = score + get_curr_flow(out_opened)
