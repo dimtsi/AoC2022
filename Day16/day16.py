@@ -148,7 +148,7 @@ def max_flow_p2():
 
     max_flow = get_curr_flow(VALID_VALVES)
 
-    start = [("AA", "AA", 1, 0, set())]
+    start = [("AA", "AA", 1, 0, frozenset())]
     M = defaultdict(lambda: (-1, frozenset()))
     q = deque(start)
     i = 0
@@ -218,7 +218,6 @@ def max_flow_p2():
             if eleph in VALID_VALVES and eleph not in opened:
                 out_opened = deepcopy(opened) | {eleph}
                 new_score = score + get_curr_flow(out_opened)
-                # if new_score > MAX_SCORE: MAX_SCORE = new_score
                 new_state = (
                     you_new,
                     eleph,
