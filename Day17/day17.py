@@ -36,7 +36,7 @@ def print_grid(curr, space, max_H):
     sp.update(set(curr.positions))
     for j in reversed(range(max(max_H, curr.max_y) + 1)):
         row = []
-        for i in range(LEN):
+        for i in range(7):
             if (i, j) in sp:
                 row.append("#")
             else:
@@ -57,7 +57,6 @@ def run(lines, n, space, verb=False):
         q.append(eltype)
 
         curr = eltype(max_h)
-        can_go_down = True
         if verb:
             print()
             print_grid(curr, space, max_h)
@@ -72,9 +71,9 @@ def run(lines, n, space, verb=False):
                 print_grid(curr, space, max_h)
 
             if next_move == "<":
-                can_move = curr.left(space)
+                curr.left(space)
             elif next_move == ">":
-                can_move = curr.right(space)
+                curr.right(space)
             else:
                 raise Exception("Unknown Type")
             if verb:
@@ -92,11 +91,6 @@ def run(lines, n, space, verb=False):
                 break
 
     return max_h + 1
-    # idxs = []
-    # for i, (v1, v2) in enumerate(lines):
-    #     if compare(v1, v2):
-    #         idxs.append(i + 1)
-    # return sum(idxs)
 
 
 def get_new_skyline(curr: SHAPE, skyline):
@@ -112,7 +106,6 @@ def runp2(lines, n, space, verb=False):
     moves = deepcopy(lines)
     M = {}
     skyline = [-1 for _ in range(7)]
-    periodic_diffs = []
     period = None
 
     q = deque(R.order())
@@ -123,7 +116,6 @@ def runp2(lines, n, space, verb=False):
         q.append(eltype)
 
         curr = eltype(max_h)
-        can_go_down = True
         if verb:
             print()
             print_grid(curr, space, max_h)
@@ -207,7 +199,6 @@ def main(filename: str) -> Tuple[Optional[int], Optional[int]]:
     answer_a = run(lines, 2022, set())
     lines = parse(filename)
     answer_b = runp2(lines, 1000000000000, set())
-    # answer_b = runp2(lines)
 
     end = time()
     print(end - start)
@@ -239,5 +230,5 @@ if __name__ == "__main__":
     answer_a, answer_b = main(input)
     print(f"Your input answers: \nA: {answer_a}\nB: {answer_b}")
 
-    # submit_answer(answer_a, "a")
-    # submit_answer(answer_b, "b")
+    submit_answer(answer_a, "a")
+    submit_answer(answer_b, "b")
