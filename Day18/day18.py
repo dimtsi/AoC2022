@@ -53,7 +53,6 @@ def run(cubes):
         neighbors = get_neighbors(*c)
         total_exposed += len(neighbors - cubes)
 
-    print()
     return total_exposed
 
 
