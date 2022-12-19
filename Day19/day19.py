@@ -61,12 +61,9 @@ def get_qual(strategy, n_rounds):
     )
     q = deque([state])
     max_geods = 0
-    cnt_visited = 0
     visited = set()
-    time_to_state = {}
     cnt_visit = 0
 
-    min_time_for_obs = defaultdict(lambda: float("inf"))
     min_time_for_geod = defaultdict(lambda: float("inf"))
 
     while q:
@@ -181,7 +178,6 @@ def get_qual(strategy, n_rounds):
                 )
             )
 
-    print(cnt_visit)
     return max_geods
 
 
@@ -191,12 +187,12 @@ def get_qual_p2(strategy, n_rounds):
         (i * (i + 1)) // 2 for i in reversed(range(n_rounds + 1))
     ]  # Integer Seq
     (
-        ore_T_ore,
-        clay_T_ore,
-        obs_T_ore,
-        obs_T_clay,
-        geode_T_ore,
-        geod_T_obs,
+        ore_C_ore,
+        clay_C_ore,
+        obs_C_ore,
+        obs_C_clay,
+        geode_C_ore,
+        geod_C_obs,
     ) = strategy
 
     curr_ore, curr_clay, curr_obs, curr_geod = 0, 0, 0, 0
@@ -217,12 +213,6 @@ def get_qual_p2(strategy, n_rounds):
     max_geods = 0
 
     visited = set()
-    time_to_state = {}
-
-    min_time_for_obs = defaultdict(lambda: float("inf"))
-    min_time_for_geod = defaultdict(lambda: float("inf"))
-
-    DP = {}
 
     while q:
         state = q.pop()
@@ -240,8 +230,6 @@ def get_qual_p2(strategy, n_rounds):
 
         if state in visited:
             continue
-
-        dp_state = (t, ore_robs, clay_robs, obs_robs, geod_robs)
 
         visited.add(state)
 
@@ -263,12 +251,15 @@ def get_qual_p2(strategy, n_rounds):
         if max_potential <= max_geods:
             continue
 
-        need_ore = (clay_T_ore + obs_T_ore + geode_T_ore) * 2 >= new_ore
-        need_clay = obs_T_clay * 2 >= new_clay
-        need_obs = geod_T_obs * 2 >= new_obs
+        # We decide to not generate any more of a specific resource if we have 2* the total asked for.
+        need_ore = (
+            ore_C_ore + clay_C_ore + obs_C_ore + geode_C_ore
+        ) * 2 >= new_ore
+        need_clay = obs_C_clay * 2 >= new_clay
+        need_obs = geod_C_obs * 2 >= new_obs
 
         # build geode
-        if curr_ore >= geode_T_ore and curr_obs >= geod_T_obs:
+        if curr_ore >= geode_C_ore and curr_obs >= geod_C_obs:
             q.append(
                 (
                     t + 1,
@@ -276,15 +267,15 @@ def get_qual_p2(strategy, n_rounds):
                     clay_robs,
                     obs_robs,
                     geod_robs + 1,
-                    new_ore - geode_T_ore,
+                    new_ore - geode_C_ore,
                     new_clay,
-                    new_obs - geod_T_obs,
+                    new_obs - geod_C_obs,
                     new_geod,
                 )
             )
 
         # build obs
-        if curr_ore >= obs_T_ore and curr_clay >= obs_T_clay and need_obs:
+        if curr_ore >= obs_C_ore and curr_clay >= obs_C_clay and need_obs:
             q.append(
                 (
                     t + 1,
@@ -292,15 +283,15 @@ def get_qual_p2(strategy, n_rounds):
                     clay_robs,
                     obs_robs + 1,
                     geod_robs,
-                    new_ore - obs_T_ore,
-                    new_clay - obs_T_clay,
+                    new_ore - obs_C_ore,
+                    new_clay - obs_C_clay,
                     new_obs,
                     new_geod,
                 )
             )
 
         # build clay
-        if curr_ore >= clay_T_ore and need_clay:
+        if curr_ore >= clay_C_ore and need_clay:
             q.append(
                 (
                     t + 1,
@@ -308,7 +299,7 @@ def get_qual_p2(strategy, n_rounds):
                     clay_robs + 1,
                     obs_robs,
                     geod_robs,
-                    new_ore - clay_T_ore,
+                    new_ore - clay_C_ore,
                     new_clay,
                     new_obs,
                     new_geod,
@@ -316,7 +307,7 @@ def get_qual_p2(strategy, n_rounds):
             )
 
         # build ore
-        if curr_ore >= ore_T_ore and need_ore:
+        if curr_ore >= ore_C_ore and need_ore:
             q.append(
                 (
                     t + 1,
@@ -324,7 +315,7 @@ def get_qual_p2(strategy, n_rounds):
                     clay_robs,
                     obs_robs,
                     geod_robs,
-                    new_ore - ore_T_ore,
+                    new_ore - ore_C_ore,
                     new_clay,
                     new_obs,
                     new_geod,
