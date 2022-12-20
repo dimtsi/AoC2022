@@ -129,6 +129,7 @@ def main(filename: str) -> Tuple[Optional[int], Optional[int]]:
 
     start = time()
     answer_a, answer_b = None, None
+    ore_coll, clay_coll, obs_coll = 0, 0, 0
 
     lines = parse(filename)
     answer_a = run(lines)

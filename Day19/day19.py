@@ -215,7 +215,7 @@ def get_qual_p2(strategy, n_rounds):
     visited = set()
 
     while q:
-        state = q.pop()
+        state = q.popleft()
         (
             t,
             ore_robs,
