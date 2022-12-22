@@ -111,7 +111,7 @@ def move(g, pos, dir, n_moves, side):
     x, y = pos
 
     for i in range(n_moves):
-        print(i + 1, n_moves, dir)
+        # print(i + 1, n_moves, dir)
         if (
             (dir == "N" and (x, y) in BORDERS[side]["N"])
             or (dir == "W" and (x, y) in BORDERS[side]["W"])
@@ -140,10 +140,6 @@ def move(g, pos, dir, n_moves, side):
                 assert False
             origin = "regular"
             new_x, new_y, new_dir, new_side = x + dx, y + dy, dir, side
-        try:
-            assert g[new_x][new_y] != " "
-        except:
-            print()
 
         if g[new_x][new_y] == "#":
             return x, y, dir, side
@@ -171,7 +167,6 @@ def run(g, moves, start):
 
     res = 1000 * (pos[0] + 1) + 4 * (pos[1] + 1) + DIR_SCORE[dir]
     print(res)
-    # assert False
     return res
 
 

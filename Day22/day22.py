@@ -93,20 +93,6 @@ def parse(filename: str):
                 max_j = i, j
         col_limits[j] = min_j, max_j
 
-    # print_g(g)
-    #
-    # for (min_i, max_i) in row_limits.values():
-    #     g[min_i[0]][min_i[1]] = "B"
-    #     g[max_i[0]][max_i[1]] = "B"
-    #
-    # for (min_j, max_j) in col_limits.values():
-    #     g[min_j[0]][min_j[1]] = "B"
-    #     g[max_j[0]][max_j[1]] = "B"
-    #
-    # g[start[0]][start[1]] = "S"
-    #
-    #
-    # print_g(g)
     return g, moves_out, start, row_limits, col_limits
 
 
