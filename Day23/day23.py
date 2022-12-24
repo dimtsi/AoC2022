@@ -157,8 +157,8 @@ def run(g, p2=False):
         r += 1
         if r == 10 and not p2:
             break
-        print_g(g)
-        print()
+        # print_g(g)
+        # print()
 
     s = get_S(g)
     if p2:
