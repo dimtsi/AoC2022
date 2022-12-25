@@ -23,16 +23,16 @@ def parse(filename: str):
 
 
 def snafu_to_real(line):
-    row_n = 0
+    real = 0
     for i, snaf in enumerate(line, 1):
         sig = len(line) - i
         if snaf.isnumeric():
-            row_n += int(snaf) * (5 ** (sig))
+            real += int(snaf) * (5 ** (sig))
         elif snaf == "-":
-            row_n -= 5 ** (sig)
+            real -= 5 ** (sig)
         elif snaf == "=":
-            row_n -= 2 * 5 ** (sig)
-    return row_n
+            real -= 2 * 5 ** (sig)
+    return real
 
 
 def real_to_snafu(num):
