@@ -42,19 +42,20 @@ def real_to_snafu(num):
         rem = curr_n % 5
         if rem == 2:
             s += "2"
-            curr_n = (curr_n - 2) // 5
+            carry = -2
         elif rem == 1:
             s += "1"
-            curr_n = (curr_n - 1) // 5
+            carry = -1
         elif rem == 0:
             s += "0"
-            curr_n = curr_n // 5
+            carry = 0
         elif rem == 3:
             s += "="
-            curr_n = (curr_n + 2) // 5
+            carry = 2
         elif rem == 4:
             s += "-"
-            curr_n = (curr_n + 1) // 5
+            carry = 1
+        curr_n = (curr_n + carry) // 5
 
         if curr_n == 0:
             break
